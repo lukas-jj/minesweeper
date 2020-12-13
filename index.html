@@ -3,13 +3,18 @@
   <head>
     <title>Minesweeper</title>
     <link rel="stylesheet" href="minesweeper.css">
+
+  </head>
+  <body>
+    
+    <div id="message"></div>
+    <div id="notes"></div>
+    <input value="3" id="changeMine" type="number" onchange="addMines()">
+    <input value = "submit" type="submit" onclick="startGame()">
+    <button value = "delete" type="button" onclick="resetBoard()">Reset</button>
+    <div class="board"></div>
     <script src="lib/tests.js"></script>
     <script src="lib/lib.js"></script>
     <script src="minesweeper.js"></script>
-  </head>
-  <body>
-    <div id="message"></div>
-    <div id="notes"></div>
-    <div class="board"></div>
   </body>
 </html>

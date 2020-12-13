@@ -1,41 +1,54 @@
 document.addEventListener('DOMContentLoaded', startGame)
-
 // Define your `board` object here!
-var board = {
-  cells: [
-    {
-      row: 0,
-      col: 0,
-      isMine: true,
-      hidden: true
-    },
-    {
-      row: 0,
-      col: 1,
-      isMine: false,
-      hidden: true
-    },
-    {
-      row: 1,
-      col: 0,
-      isMine: true,
-      hidden: true
-    },
-    {
-      row: 1,
-      col: 1,
-      isMine: false,
-      hidden: true
-    },
-  ]
+
+function createBoard(rowSize, colSize, mineNum) {
+
+  let board = { cells: [] }
+
+  for (let i = 0; i < colSize; i++) {
+    for (let j = 0; j < rowSize; j++) {
+      board.cells.push({
+        row: i,
+        col: j,
+        isMine: false,
+        isMarked: false,
+        hidden: true
+      })
+    }
+  }
+
+  
+
+
+  let boardSize = rowSize * colSize
+
+  for (let i = 0; i < mineNum; i++) {
+  board.cells[Math.floor(Math.random() * boardSize)].isMine = true
+  }
+  return board
 }
+
+function addMines(){
+
+return document.getElementById("changeMine").value
+
+}
+
+const mines = addMines()
+
+const board = createBoard(5, 5, mines)
 
 function startGame() {
   board.cells.forEach(cell => {
-cell.surroundingMines = countSurroundingMines(cell)
+    cell.surroundingMines = countSurroundingMines(cell)
   })
   lib.initBoard()
+
+  document.addEventListener("click", checkForWin)
+  document.addEventListener("contextmenu", checkForWin)
 }
+
+
 
 // Define this function to look for a win condition:
 //
@@ -43,10 +56,48 @@ cell.surroundingMines = countSurroundingMines(cell)
 // 2. Are all of the mines marked?
 function checkForWin() {
 
-  // You can use this function call to declare a winner (once you've
-  // detected that they've won, that is!)
-  //   lib.displayMessage('You win!')
+  let isMineCount = 0
+  let isMarkedCount = 0
+  let markedMine = 0
+  let isHiddenCount = 0
+  let bang = false;
+  board.cells.forEach(cell => {
+
+    if (cell.hidden) {
+      isHiddenCount++
+    }
+
+    if (!cell.hidden && cell.isMine) {
+      bang = true;
+    }
+
+    if (cell.isMarked) {
+      isMarkedCount++
+    }
+
+    if (cell.isMine) {
+      isMineCount++
+    }
+
+    if (cell.isMine && cell.isMarked) {
+      markedMine++
+    }
+
+  })
+  // console.log("Marked " + markedMine)
+  // console.log("isMine " + isMineCount)
+  // console.log("isMarked " + isMarkedCount)
+  // console.log("isHidden " + isHiddenCount)
+  if (markedMine === isMineCount && markedMine === isMarkedCount) {
+    return lib.displayMessage('You win!')
+  }
+  if (isHiddenCount === isMineCount && !bang) {
+    return lib.displayMessage('You win!')
+  }
+
+  // lib.displayMessage('You win!') 
 }
+
 
 // Define this function to count the number of mines around the cell
 // (there could be as many as 8). You don't have to get the surrounding
@@ -58,14 +109,17 @@ function checkForWin() {
 // them, counting the number of times `cell.isMine` is true.
 function countSurroundingMines(cell) {
 
- var surrounding = lib.getSurroundingCells(cell.row, cell.col)
-let count = 0
-surrounding.forEach(cell => {
-  if (cell.isMine){
-    count += 1
-  }
-})
-return count
+  var surrounding = lib.getSurroundingCells(cell.row, cell.col)
+  let count = 0
+  surrounding.forEach(cell => {
+    if (cell.isMine) {
+      count += 1
+    }
+  })
+  return count
 }
 
-console.log(board.cells)
+function resetBoard() {
+
+document.getElementsByClassName('board').remove
+}
