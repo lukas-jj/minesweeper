@@ -17,20 +17,17 @@ function createBoard(rowSize, colSize, mineNum) {
     }
   }
 
-  
-
-
   let boardSize = rowSize * colSize
 
   for (let i = 0; i < mineNum; i++) {
-  board.cells[Math.floor(Math.random() * boardSize)].isMine = true
+    board.cells[Math.floor(Math.random() * boardSize)].isMine = true
   }
   return board
 }
 
-function addMines(){
+function addMines() {
 
-return document.getElementById("changeMine").value
+  return document.getElementById("changeMine").value
 
 }
 
@@ -39,9 +36,9 @@ const mines = addMines()
 const board = createBoard(5, 5, mines)
 
 function startGame() {
+
   board.cells.forEach(cell => {
-    cell.surroundingMines = countSurroundingMines(cell)
-  })
+    cell.surroundingMines = countSurroundingMines(cell)  })
   lib.initBoard()
 
   document.addEventListener("click", checkForWin)
@@ -121,5 +118,17 @@ function countSurroundingMines(cell) {
 
 function resetBoard() {
 
-document.getElementsByClassName('board').remove
+  var gameContainerCount = document.getElementById('board').childElementCount
+  var gameContainer = document.getElementById('board')
+
+  for (var removeCounter = 0; removeCounter < gameContainerCount; removeCounter++) {
+    gameContainer.removeChild(gameContainer.childNodes[0])
+  }
+
+  for (var i = 0; i < board.cells.length; i++) {
+    board.cells[i].hidden = true;
+  }
+
+  
+  startGame()
 }
