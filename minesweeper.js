@@ -9,6 +9,13 @@ function createBoard(rowSize, colSize, mineNum) {
 
   let board = { cells: [] }
 
+  var gameContainerCount = document.getElementById('board').childElementCount
+  var gameContainer = document.getElementById('board')
+
+  for (var removeCounter = 0; removeCounter < gameContainerCount; removeCounter++) {
+    gameContainer.removeChild(gameContainer.childNodes[0])
+  }
+
   for (let i = 0; i < colSize; i++) {
     for (let j = 0; j < rowSize; j++) {
       board.cells.push({
@@ -33,11 +40,12 @@ let board = createBoard(5, 5)
 
 
 function startGame() {
-  
-  lib.initBoard()
+
 
   board.cells.forEach(cell => {
-    cell.surroundingMines = countSurroundingMines(cell)  })
+    cell.surroundingMines = countSurroundingMines(cell)
+  })
+  lib.initBoard()
 
   document.addEventListener("click", checkForWin)
   document.addEventListener("contextmenu", checkForWin)
@@ -107,7 +115,7 @@ function countSurroundingMines(cell) {
   let count = 0
   surrounding.forEach(cell => {
     if (cell.isMine) {
-      count ++
+      count++
     }
   })
   return count
@@ -116,16 +124,27 @@ function countSurroundingMines(cell) {
 function resetBoard() {
   var gameContainerCount = document.getElementById('board').childElementCount
   var gameContainer = document.getElementById('board')
-
+  var mines = document.getElementById("changeMine").value
   for (var removeCounter = 0; removeCounter < gameContainerCount; removeCounter++) {
     gameContainer.removeChild(gameContainer.childNodes[0])
   }
 
   for (var i = 0; i < board.cells.length; i++) {
     board.cells[i].hidden = true;
+    board.cells[i].isMine = false;
   }
 
-  console.log(board)
+
+  for (var i = 0; i < mines; i++) {
+    board.cells[Math.floor(Math.random() * board.cells.length)].isMine = true
+  }
+
+  for (const cell of board.cells) { delete cell.isProcessed }
+
+
+
+
   startGame()
+
 
 }
