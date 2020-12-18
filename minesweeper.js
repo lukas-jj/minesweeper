@@ -114,9 +114,18 @@ function countSurroundingMines(cell) {
 }
 
 function resetBoard() {
-  
-let cellCount = document.getElementById("board").childElementCount
+  var gameContainerCount = document.getElementById('board').childElementCount
+  var gameContainer = document.getElementById('board')
 
+  for (var removeCounter = 0; removeCounter < gameContainerCount; removeCounter++) {
+    gameContainer.removeChild(gameContainer.childNodes[0])
+  }
 
+  for (var i = 0; i < board.cells.length; i++) {
+    board.cells[i].hidden = true;
+  }
+
+  console.log(board)
+  startGame()
 
 }
