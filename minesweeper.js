@@ -1,7 +1,11 @@
 document.addEventListener('DOMContentLoaded', startGame)
 // Define your `board` object here!
 
+
+
 function createBoard(rowSize, colSize, mineNum) {
+
+  mineNum = document.getElementById("changeMine").value
 
   let board = { cells: [] }
 
@@ -25,21 +29,15 @@ function createBoard(rowSize, colSize, mineNum) {
   return board
 }
 
-function addMines() {
+let board = createBoard(5, 5)
 
-  return document.getElementById("changeMine").value
-
-}
-
-const mines = addMines()
-
-const board = createBoard(5, 5, mines)
 
 function startGame() {
+  
+  lib.initBoard()
 
   board.cells.forEach(cell => {
     cell.surroundingMines = countSurroundingMines(cell)  })
-  lib.initBoard()
 
   document.addEventListener("click", checkForWin)
   document.addEventListener("contextmenu", checkForWin)
@@ -105,30 +103,20 @@ function checkForWin() {
 // It will return cell objects in an array. You should loop through 
 // them, counting the number of times `cell.isMine` is true.
 function countSurroundingMines(cell) {
-
   var surrounding = lib.getSurroundingCells(cell.row, cell.col)
   let count = 0
   surrounding.forEach(cell => {
     if (cell.isMine) {
-      count += 1
+      count ++
     }
   })
   return count
 }
 
 function resetBoard() {
-
-  var gameContainerCount = document.getElementById('board').childElementCount
-  var gameContainer = document.getElementById('board')
-
-  for (var removeCounter = 0; removeCounter < gameContainerCount; removeCounter++) {
-    gameContainer.removeChild(gameContainer.childNodes[0])
-  }
-
-  for (var i = 0; i < board.cells.length; i++) {
-    board.cells[i].hidden = true;
-  }
-
   
-  startGame()
+let cellCount = document.getElementById("board").childElementCount
+
+
+
 }
